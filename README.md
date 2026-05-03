@@ -68,8 +68,8 @@ Enter prompt (example):
 6️⃣ Setup Database
  - Open phpMyAdmin
  - Import database.sql
-7️⃣ Run Generated Form
 
+7️⃣ Run Generated Form
 Place form.php in your server folder and open: ```http://localhost/form.php```
 
 ---
