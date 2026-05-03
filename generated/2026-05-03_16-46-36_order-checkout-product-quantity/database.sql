@@ -1,0 +1,10 @@
+CREATE DATABASE IF NOT EXISTS checkout_db;
+USE checkout_db;
+
+CREATE TABLE IF NOT EXISTS orders (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    product VARCHAR(255) NOT NULL,
+    quantity INT NOT NULL,
+    address TEXT NOT NULL,
+    payment VARCHAR(100) NOT NULL
+);

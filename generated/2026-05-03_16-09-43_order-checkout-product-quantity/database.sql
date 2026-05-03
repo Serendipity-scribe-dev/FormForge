@@ -1,0 +1,11 @@
+CREATE DATABASE IF NOT EXISTS shop_db;
+USE shop_db;
+
+CREATE TABLE IF NOT EXISTS orders (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    product_name VARCHAR(100) NOT NULL,
+    quantity INT NOT NULL,
+    address TEXT NOT NULL,
+    payment_method VARCHAR(50) NOT NULL,
+    order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
