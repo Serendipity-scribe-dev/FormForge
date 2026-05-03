@@ -82,6 +82,7 @@ User registration form with name, email, password and mobile number
 <img width="1887" height="893" alt="Screenshot 2026-05-03 230015" src="https://github.com/user-attachments/assets/427d5ed5-dd4d-4d2f-aac0-8d8927d13e0f" />
 <img width="1919" height="965" alt="Screenshot 2026-05-03 223030" src="https://github.com/user-attachments/assets/b2b57cf5-6be3-4974-8ab7-1fd6eaa4cdec" />
 <img width="844" height="865" alt="Screenshot 2026-05-03 222905" src="https://github.com/user-attachments/assets/8b2d14c1-95ba-4d40-b7c6-ce6eff02dd50" />
+<img width="654" height="635" alt="image" src="https://github.com/user-attachments/assets/f38cdb76-dc9f-464c-bbfa-963dbfb433ea" />
 <img width="819" height="518" alt="Screenshot 2026-05-03 222959" src="https://github.com/user-attachments/assets/4e5fa3e2-d007-4bb9-8fa1-8664383d8ff6" />
 
 ---
