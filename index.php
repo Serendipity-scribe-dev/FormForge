@@ -281,7 +281,9 @@
             typingEl.remove();
 
             if (data.error) {
-                const errHtml = '<div class="error-msg">⚠️ ' + escHtml(data.error) + '</div>';
+               const errHtml = '<div class="error-msg">⚠️ <pre>' + 
+                escHtml(JSON.stringify(data, null, 2)) + 
+                '</pre></div>';
                 const botMsg  = { role: 'bot', content: 'Something went wrong.', resultHtml: errHtml };
                 addMessageToSession(botMsg);
                 renderMessage('bot', botMsg.content, errHtml, true);

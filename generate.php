@@ -3,7 +3,8 @@
 if(isset($_POST['prompt'])) {
 
     $prompt = $_POST['prompt'];
-    $apiKey = "AIzaSyDfsVGpPl2RV6MNnEVVCXVBwDw3NLJ9gEg";
+    $config = require 'config.php';
+    $apiKey = $config['API_KEY'];
     $modelName = "gemini-flash-latest";
 
     // Prompt asks for code + setup instructions
@@ -70,23 +71,74 @@ Prompt: $prompt"
 
     $result = json_decode($response, true);
 
-    if (!isset($result['candidates'][0]['content']['parts'][0]['text'])) {
-        die(json_encode(["error" => "Invalid response from Gemini", "raw" => $result]));
-    }
+    header('Content-Type: application/json');
 
-    $text = $result['candidates'][0]['content']['parts'][0]['text'];
+if (isset($result['error'])) {
+    echo json_encode($result, JSON_PRETTY_PRINT);
+    exit;
+}
+
+
+// ❌ Handle API error
+if (isset($result['error'])) {
+    header('Content-Type: application/json');
+    echo json_encode([
+        "error" => "Gemini API Error",
+        "details" => $result['error']
+    ]);
+    exit;
+}
+
+
+// ❌ Handle missing candidates
+if (!isset($result['candidates'][0])) {
+    die(json_encode([
+        "error" => "No candidates returned",
+        "raw" => $result
+    ]));
+}
+
+// ❌ Handle blocked response
+if (($result['candidates'][0]['finishReason'] ?? '') === 'SAFETY') {
+    die(json_encode([
+        "error" => "Blocked by Gemini safety filters",
+        "raw" => $result
+    ]));
+}
+
+// ✅ Extract text safely
+$text = $result['candidates'][0]['content']['parts'][0]['text'] ?? null;
+
+if (!$text) {
+    die(json_encode([
+        "error" => "No text returned",
+        "raw" => $result
+    ]));
+}
 
     // Clean any markdown fences if model slips them in
-    $text = preg_replace('/```json\s*/i', '', $text);
-    $text = preg_replace('/```\s*/',      '', $text);
-    $text = trim($text);
+    // Remove markdown safely
+$text = preg_replace('/```(json)?/i', '', $text);
+$text = trim($text);
 
-    $json = json_decode($text, true);
+// Extract JSON only (IMPORTANT FIX)
+preg_match('/\{.*\}/s', $text, $matches);
 
-    if (!$json) {
-        die(json_encode(["error" => "JSON parsing failed", "raw" => $text]));
-    }
+if (!isset($matches[0])) {
+    die(json_encode([
+        "error" => "No valid JSON found in response",
+        "raw" => $text
+    ]));
+}
 
+$json = json_decode($matches[0], true);
+
+if (!$json) {
+    die(json_encode([
+        "error" => "JSON parsing failed",
+        "raw" => $matches[0]
+    ]));
+}
     // Save to timestamped folder under /generated/ 
     $timestamp  = date('Y-m-d_H-i-s');
     $slug       = preg_replace('/[^a-z0-9]+/', '-', strtolower(substr($prompt, 0, 40)));

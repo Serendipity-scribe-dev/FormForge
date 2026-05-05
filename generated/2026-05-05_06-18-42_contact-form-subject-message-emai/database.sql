@@ -1,0 +1,9 @@
+CREATE DATABASE IF NOT EXISTS contact_db;
+USE contact_db;
+
+CREATE TABLE IF NOT EXISTS contact_messages (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    subject VARCHAR(255) NOT NULL,
+    message TEXT NOT NULL,
+    email VARCHAR(255) NOT NULL
+);
